@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import math
 import pandas as pd
 from pathlib import Path
 
@@ -36,7 +35,7 @@ def dj_cost(x, y, w_cur, b_cur):
         err[i] = f_wb(w_cur, b_cur, x[i])-y[i]
 
     dw = np.dot(x, err)
-    dw = np.sum(dw)/m
+    dw = dw/m
 
     db = np.sum(err)/m
 
