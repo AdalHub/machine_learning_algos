@@ -7,14 +7,16 @@ cur_dir = Path(__file__).parent
 df = pd.read_csv(cur_dir /'Student_Performance.csv')
 
 df['Extracurricular Activities'] = df['Extracurricular Activities'].map({'Yes':1, 'No':0})
-print(df.head())
+
 X= df.iloc[:, :-1].to_numpy()
 Y = df.iloc[:, -1].to_numpy()
+print(df.head)
 
 #normalizing X
 mu = X.mean(axis=0)
 sigma = X.std(axis=0)
 X = (X - mu) / sigma
+
 
 print(X.shape)
 print(Y.shape)
@@ -61,6 +63,7 @@ def compute_grad_desc(x_train, y_train, w,b, alpha,iter):
         b = b - alpha * dj_db
     return w, b
 
+
 w_init = np.array([6, 1, 5, 5, 5])
 b_init = 0
 learning_rate = 1e-2
@@ -79,10 +82,19 @@ def compute_pred(x_train, w, b):
         y_pred[i]= f_wb(w,b,x_train[i])
     return y_pred
 
-y_pred = compute_pred(X, w_fin, b_fin)        # X here is your normalized training matrix
+y_pred = compute_pred(X, w_fin, b_fin)
 
-plt.scatter(Y, y_pred, s=8, alpha=0.4)
+
+#visualizing features
+fig, axes=plt.subplots(1,6, figsize=(12,4))
+n = X.shape[1]
+for i in range(n):
+    colors=['r','b','m','g', 'y']
+    axes[i].scatter(X[:,i], Y, c= colors[i])
+
+
+axes[5].scatter(Y, y_pred, s=8, alpha=0.4)
 lims = [min(Y.min(), y_pred.min()), max(Y.max(), y_pred.max())]
-plt.plot(lims, lims, 'r--', label='perfect prediction')
-plt.xlabel('Actual y'); plt.ylabel('Predicted y'); plt.legend()
+axes[5].plot(lims, lims, 'r--', label='perfect prediction')
+axes[5].set_xlabel('Actual y'); axes[5].set_ylabel('Predicted y'); plt.legend()
 plt.show()
